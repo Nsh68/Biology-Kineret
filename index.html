@@ -579,7 +579,7 @@ video { width:100%; display:block; }
 </div><!-- /page -->
 
 <script>
-// ── Video logic ────────────────────────────────────────
+//── Video logic ────────────────────────────────────────
 var vid = document.getElementById('vid');
 var overlay = document.getElementById('overlay');
 var replayBtn = document.getElementById('replayBtn');
@@ -607,7 +607,7 @@ function replay() {
   }
 }
 
-// ── Form page ──────────────────────────────────────────
+//── Form page ──────────────────────────────────────────
 var formPage = document.getElementById('formPage');
 
 function openForm() {
@@ -624,7 +624,7 @@ function closeForm() {
   document.body.style.overflow = '';
 }
 
-// ── Conditional messages ───────────────────────────────
+//── Conditional messages ───────────────────────────────
 document.querySelectorAll('input[name="life_rel"]').forEach(function(r) {
   r.addEventListener('change', function() {
     var msg = document.getElementById('msg_life');
@@ -646,7 +646,7 @@ function hideCond() {
   }
 }
 
-// ── Google Sheets backend ──────────────────────────────
+//── Google Sheets backend ──────────────────────────────
 var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyQIHrUC47NL9JkrmrvPlp2rdnmE7TDFdOwmVH5sl1H7UIKfn21OwF8TcQPEzXeT_JPIw/exec';
 
 function handleSubmit(e) {
