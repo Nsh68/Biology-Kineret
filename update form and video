@@ -563,12 +563,14 @@ video { width:100%; display:block; }
     <div id="thankyou">
       <div class="ty-circle">✓</div>
       <h2>תודה רבה! 🎉</h2>
-      <p>
-        ההרשמה שלך התקבלה בהצלחה.<br>
-        <b>הספר ישלח אליך מיד עם קבלת אישור משרד החינוך.</b><br><br>
-        בהצלחה בכיתות! מקווים שתהנו ללמד   <em>דרך הביולוגיה</em> 🌿<br>
-        <small style="color:#8ba5bc;">נורית שושני-הֵכֶל וצוות דרך הביולוגיה</small>
-      </p>
+     <p style="direction: rtl; text-align: center;">
+  ההרשמה שלך התקבלה בהצלחה.<br>
+  <b>הספר ישלח אליך מיד עם קבלת אישור משרד החינוך.</b><br><br>
+  בהצלחה בכיתות! מקווים שתהנו ללמד <em>דרך הביולוגיה</em> 🌿<br>
+  <small style="color:#8ba5bc;">
+    נורית שושני-הֵכֶל וצוות דרך הביולוגיה
+  </small>
+</p>
     </div>
 
   </form>
@@ -681,14 +683,12 @@ var replayBtn = document.getElementById('replayBtn');
 var shown     = false;
 
 vid.addEventListener('ended', showCTA);
+vid.onended = showCTA;
+setTimeout(showCTA, 5000); 
 
-function showCTA() {
-  if (shown) return;
-  shown = true;
-  overlay.classList.add('visible');
-  replayBtn.classList.add('visible');
-}
-function showCTA() {
+  function showCTA() {
+  console.log("CTA FIRED");  // ← חשוב לבדיקה
+
   if (shown) return;
   shown = true;
   overlay.classList.add('visible');
