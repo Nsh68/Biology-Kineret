@@ -596,8 +596,8 @@ function hideCond(...ids) {
 
 // ── Form submit ───────────────────────────────────────────
 // ── הגדר כאן את ה-URL שתקבלי מ-Google Apps Script ──────
-var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbz1WfYz1_urJ376vLrNymxcEdiwQiDLOvz-DdTQg1QL6dCt0lP7cZtjPwLd0rchEds3xw/exec';
-
+//var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbz1WfYz1_urJ376vLrNymxcEdiwQiDLOvz-DdTQg1QL6dCt0lP7cZtjPwLd0rchEds3xw/exec';
+var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyQIHrUC47NL9JkrmrvPlp2rdnmE7TDFdOwmVH5sl1H7UIKfn21OwF8TcQPEzXeT_JPIw/exec';
 function handleSubmit(e) {
   e.preventDefault();
   var form = document.getElementById('mainForm');
