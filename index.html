@@ -596,10 +596,15 @@ function hideCond(...ids) {
 
 // ── Form submit ───────────────────────────────────────────
 // ── הגדר כאן את ה-URL שתקבלי מ-Google Apps Script ──────
-//var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbz1WfYz1_urJ376vLrNymxcEdiwQiDLOvz-DdTQg1QL6dCt0lP7cZtjPwLd0rchEds3xw/exec';
-var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyQIHrUC47NL9JkrmrvPlp2rdnmE7TDFdOwmVH5sl1H7UIKfn21OwF8TcQPEzXeT_JPIw/exec';
+//
+  var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyQIHrUC47NL9JkrmrvPlp2rdnmE7TDFdOwmVH5sl1H7UIKfn21OwF8TcQPEzXeT_JPIw/exec';
+
 function handleSubmit(e) {
   e.preventDefault();
+
+  console.log("ABOUT TO SEND");
+  alert("ABOUT TO SEND"); // בדיקה
+
   var form = document.getElementById('mainForm');
   var valid = true;
 
@@ -632,30 +637,30 @@ function handleSubmit(e) {
       data[k] = v;
     }
   });
-  // Multi-checkboxes → always arrays
+
   ['grade','subject'].forEach(function(key){
     if (!data[key]) data[key] = [];
     if (!Array.isArray(data[key])) data[key] = [data[key]];
   });
 
-  // Show loading state
   var btn = form.querySelector('.btn-submit');
   btn.textContent = '⏳ שולח...';
   btn.disabled = true;
 
-  // POST to Google Sheets backend
+  // 🚨 גרסה בלי no-cors כדי לראות שגיאות
   fetch(BACKEND_URL, {
     method: 'POST',
-    mode: 'no-cors',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'text/plain' }
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
   })
-  .then(function(){
+  .then(res => res.text())
+  .then(res => {
+    console.log("SERVER RESPONSE:", res);
     showThankyou();
   })
-  .catch(function(err){
-    console.warn('Submission note:', err);
-    alert('השליחה לא הושלמה. יש לבדוק שהדף רץ מ-GitHub Pages או משרת אינטרנט, ושה-Web App פורסם כ-Anyone.');
+  .catch(err => {
+    console.error("ERROR:", err);
+    alert("שליחה נכשלה");
   })
   .finally(function(){
     btn.textContent = '✅ שלח/י – אני רוצה לקבל את הספר!';
@@ -671,6 +676,7 @@ function showThankyou() {
   document.getElementById('thankyou').classList.add('show');
   document.getElementById('thankyou').scrollIntoView({ behavior:'smooth', block:'center' });
 }
+  //
 </script>
 
 </div>
