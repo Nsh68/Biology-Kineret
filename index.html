@@ -599,10 +599,20 @@ function hideCond(...ids) {
 //
   var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyQIHrUC47NL9JkrmrvPlp2rdnmE7TDFdOwmVH5sl1H7UIKfn21OwF8TcQPEzXeT_JPIw/exec';
 
+//function handleSubmit(e) {
+  //e.preventDefault();
+
+  //console.log("ABOUT TO SEND");
 function handleSubmit(e) {
   e.preventDefault();
 
+  var form = document.getElementById('mainForm');
+  var btn = form.querySelector('.btn-submit');
+  btn.textContent = 'הגעתי לשלב השליחה';
+  btn.disabled = true;
+
   console.log("ABOUT TO SEND");
+  
   alert("ABOUT TO SEND"); // בדיקה
 
   var form = document.getElementById('mainForm');
