@@ -675,17 +675,19 @@ function showThankyou() {
 
 <script>
 // ── Video logic ────────────────────────────────────────
-var MUSIC_ENDS_AT = 57.98;
 var vid       = document.getElementById('vid');
 var overlay   = document.getElementById('overlay');
 var replayBtn = document.getElementById('replayBtn');
 var shown     = false;
 
-vid.addEventListener('timeupdate', function() {
-  if (!shown && vid.currentTime >= MUSIC_ENDS_AT) showCTA();
-});
 vid.addEventListener('ended', showCTA);
 
+function showCTA() {
+  if (shown) return;
+  shown = true;
+  overlay.classList.add('visible');
+  replayBtn.classList.add('visible');
+}
 function showCTA() {
   if (shown) return;
   shown = true;
