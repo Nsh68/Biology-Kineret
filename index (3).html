@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>דרך הביולוגיה – נורית שושני-הֵכֶל</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & base ── */
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  overflow: hidden;
+  scrollbar-width: none;
+  background: #000;
+  height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-family: 'Heebo', sans-serif;
+}
+body::-webkit-scrollbar { display:none; }
+
+/* ── Player ── */
+.player-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+}
+video { width:100%; display:block; }
+
+/* ── Video CTA overlay ── */
+.cta-overlay {
+  display: none;
+  position: absolute; inset: 0;
+  z-index: 10;
+  background: linear-gradient(135deg,#0a0f2e 0%,#0d1a3a 55%,#091428 100%);
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 22px 30px 18px;
+  animation: fadeIn 0.6s ease;
+  text-align: center;
+}
+@keyframes fadeIn {
+  from { opacity:0; transform:scale(0.98); }
+  to   { opacity:1; transform:scale(1); }
+}
+.cta-overlay.visible { display:flex; }
+
+.logo-wrap { margin-bottom:12px; }
+.logo-wrap img { height:38px; opacity:0.88; filter:invert(1) brightness(1.5); }
+
+.overlay-title {
+  font-size: clamp(11px,1.85vw,16px);
+  font-weight: 800; color: #f0e040;
+  margin-bottom: 11px; line-height: 1.55;
+}
+
+.bullets { width:100%; max-width:540px; margin-bottom:14px; text-align:right; }
+.bullet {
+  font-size: clamp(9px,1.5vw,12.5px); color:#ddeeff;
+  margin:3px 0; padding:5px 11px;
+  background:rgba(255,255,255,0.06);
+  border-radius:6px; border-right:3px solid #4ab8f0;
+  line-height:1.5;
+}
+
+.cta-btn {
+  background: linear-gradient(90deg,#27ae60,#1e8449);
+  color:#fff; font-family:'Heebo',sans-serif;
+  font-size: clamp(11px,1.85vw,15px); font-weight:800;
+  padding:12px 30px; border-radius:30px;
+  border:2px solid #58d68d; cursor:pointer;
+  text-decoration:none; display:inline-block;
+  box-shadow:0 4px 22px rgba(39,174,96,0.45);
+  transition:transform 0.2s, box-shadow 0.2s;
+  margin-bottom:6px;
+}
+.cta-btn:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(39,174,96,0.6); }
+
+.sub { font-size:9.5px; color:#88aacc; margin-bottom:8px; }
+
+.replay-btn {
+  display: none;
+  position: absolute; bottom:9px; left:50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  background: rgba(0,0,0,0.5); color:rgba(255,255,255,0.55);
+  font-size:10px; padding:4px 14px; border-radius:20px;
+  cursor:pointer; border:1px solid rgba(255,255,255,0.18);
+  backdrop-filter:blur(4px);
+  transition:background 0.2s, color 0.2s;
+  white-space:nowrap; font-family:'Heebo',sans-serif;
+}
+.replay-btn:hover { background:rgba(0,0,0,0.8); color:#fff; }
+.replay-btn.visible { display:block; }
+
+/* ── FORM PAGE (hidden until button click) ── */
+#formPage {
+  display: none;
+  position: fixed; inset: 0;
+  z-index: 100;
+  overflow-y: auto;
+  scrollbar-width: none;
+  background: #edf2f7;
+  animation: slideUp 0.45s cubic-bezier(0.22,1,0.36,1);
+}
+#formPage::-webkit-scrollbar { display:none; }
+#formPage.visible { display:block; }
+@keyframes slideUp {
+  from { opacity:0; transform:translateY(30px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* Close / back button */
+.back-btn {
+  position: fixed; top:14px; left:14px;
+  z-index: 200;
+  background: rgba(13,59,94,0.92);
+  color:#fff; border:none; border-radius:50px;
+  padding:8px 18px; font-family:'Heebo',sans-serif;
+  font-size:0.82rem; font-weight:700;
+  cursor:pointer; box-shadow:0 3px 14px rgba(0,0,0,0.3);
+  transition:background 0.2s;
+}
+.back-btn:hover { background:#1a6b8a; }
+
+/* ── Embedded form styles ── */
+
+  :root {
+    --ocean:  #1a6b8a;
+    --deep:   #0d3b5e;
+    --green:  #27ae60;
+    --green2: #1e8449;
+    --gold:   #ffe066;
+    --cream:  #f7fafd;
+    --border: #dbeaf4;
+    --text:   #1e2d3d;
+    --muted:  #6b8aa0;
+    --red:    #e53e3e;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Heebo', sans-serif;
+    direction: rtl;
+    background: #edf2f7;
+    min-height: 100vh;
+    padding: 32px 16px 48px;
+  }
+
+  /* ── Page wrapper ── */
+  .page { max-width: 680px; margin: 0 auto; }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, var(--deep) 0%, var(--ocean) 100%);
+    border-radius: 18px 18px 0 0;
+    padding: 32px 36px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(255,255,255,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 2px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .hero-title {
+    font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+    font-weight: 900; color: #fff; line-height: 1.45; margin-bottom: 10px;
+  }
+  .hero-title em { color: var(--gold); font-style: normal; }
+  .hero-sub {
+    font-size: 0.9rem; color: rgba(255,255,255,0.82); line-height: 1.7; max-width: 500px; margin: 0 auto;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: #fff;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+
+  /* ── Section header ── */
+  .sec-head {
+    background: var(--ocean);
+    padding: 12px 28px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sec-head.alt { background: var(--deep); }
+  .sec-head h2 { font-size: 0.88rem; font-weight: 700; color: #fff; }
+  .sec-icon {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0;
+  }
+
+  /* ── Fields ── */
+  .fields { padding: 22px 28px; display: flex; flex-direction: column; gap: 16px; }
+  .field  { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 0.82rem; font-weight: 700; color: var(--deep); }
+  .req { color: var(--red); margin-right: 2px; }
+  .opt { font-size: 0.72rem; font-weight: 400; color: var(--muted); margin-right: 4px; }
+
+  input[type=text], input[type=email], input[type=tel],
+  input[type=number], select {
+    width: 100%; padding: 10px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.93rem; color: var(--text);
+    background: var(--cream);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none; direction: rtl;
+  }
+  input:focus, select:focus {
+    border-color: var(--ocean);
+    box-shadow: 0 0 0 3px rgba(26,107,138,0.12);
+  }
+  input.err { border-color: var(--red); box-shadow: 0 0 0 3px rgba(229,62,62,0.1); }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width:520px){ .field-row { grid-template-columns: 1fr; } }
+
+  /* ── Chips (checkbox/radio) ── */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+  .chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--cream); border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 7px 13px; cursor: pointer;
+    font-size: 0.88rem; font-weight: 500; color: #374151;
+    transition: all 0.15s; user-select: none;
+  }
+  .chip input { width:15px; height:15px; accent-color: var(--ocean); cursor:pointer; flex-shrink:0; }
+  .chip:has(input:checked) {
+    border-color: var(--ocean); background: rgba(26,107,138,0.08); color: var(--ocean);
+  }
+
+  /* ── Scale (1-5 type) ── */
+  .scale { display: flex; gap: 0; border-radius: 9px; overflow: hidden; border: 1.5px solid var(--border); }
+  .scale label {
+    flex:1; text-align:center; padding: 9px 4px;
+    font-size: 0.82rem; font-weight: 600; cursor:pointer;
+    background: var(--cream); color: var(--muted);
+    transition: all 0.15s; border-left: 1px solid var(--border);
+  }
+  .scale label:last-child { border-left: none; }
+  .scale input[type=radio] { display:none; }
+  .scale input:checked + label { background: var(--ocean); color:#fff; }
+
+  /* ── Conditional message ── */
+  .cond-msg {
+    display: none;
+    margin-top: 10px;
+    background: rgba(26,107,138,0.08);
+    border-right: 3px solid var(--ocean);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.84rem;
+    color: var(--deep);
+    line-height: 1.7;
+    animation: slideIn 0.3s ease;
+  }
+  @keyframes slideIn {
+    from { opacity:0; transform:translateY(-6px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .cond-msg.show { display:block; }
+
+  /* ── Divider ── */
+  .div { height:1px; background: linear-gradient(to left, transparent, var(--border), transparent); margin: 4px 0; }
+
+  /* ── Submit ── */
+  .submit-wrap { padding: 20px 28px 28px; text-align:center; }
+  .btn-submit {
+    background: linear-gradient(135deg, var(--green2), var(--green));
+    color: #fff; font-family: 'Heebo', sans-serif;
+    font-size: 1.05rem; font-weight: 800;
+    padding: 14px 48px; border: none; border-radius: 50px;
+    cursor: pointer; width: 100%; max-width: 420px;
+    box-shadow: 0 6px 24px rgba(39,174,96,0.38);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-submit:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(39,174,96,0.5); }
+
+  /* ── Thank-you ── */
+  #thankyou {
+    display: none; text-align: center;
+    padding: 56px 36px; flex-direction: column;
+    align-items: center; gap: 14px;
+  }
+  #thankyou.show { display: flex; }
+  .ty-circle {
+    width: 76px; height: 76px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green2), var(--green));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 38px; box-shadow: 0 6px 28px rgba(39,174,96,0.4);
+    animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes pop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+  #thankyou h2 { font-size: 1.5rem; font-weight: 900; color: var(--deep); }
+  #thankyou p  { font-size: 0.95rem; color: var(--muted); line-height: 1.8; max-width: 440px; }
+
+</style>
+</head>
+<body>
+
+<!-- ══ VIDEO PLAYER ══════════════════════════════════════ -->
+<div class="player-wrap">
+  <video id="vid" controls playsinline>
+      <source src="intro.mp4" type="video/mp4"> 
+  </video>
+
+  <div class="cta-overlay" id="overlay">
+    <div class="logo-wrap">
+      <img src="data:image/png;base64,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" alt="כנרת זמורה דביר">
+    </div>
+    <div class="overlay-title">
+      ספרה החדש של נורית שושני-הֵכֶל משנה את כללי המשחק.<br>
+      הוא לא רק ספר לימוד – הוא עוזר ההוראה האישי שלך.
+    </div>
+    <div class="bullets">
+      <div class="bullet">✔️ <b>מיומנויות בילט-אין:</b> אוריינות וחשיבה ביקורתית כחלק מהתוכן.</div>
+      <div class="bullet">✔️ <b>חיבור לחיים:</b> הופך את התיאוריה לפרקטיקה מרתקת.</div>
+      <div class="bullet">✔️ <b>חיסכון בזמן:</b> כל דפי העבודה, הניסויים והכלים במקום אחד.</div>
+      <div class="bullet">✔️ <b>למידה פעילה:</b> התלמידים פעילים, המורה מנחה.</div>
+    </div>
+    <button class="cta-btn" onclick="openForm()">
+      📩 אני רוצה לקבל את הערכה המלאה (ספר + מדריך)
+    </button>
+    <div class="sub">מיד עם קבלת אישור משרד החינוך</div>
+  </div>
+
+  <button class="replay-btn" id="replayBtn" onclick="replay()">▶ צפה/י שוב בסרטון</button>
+</div>
+
+<!-- ══ FORM PAGE ═════════════════════ -->
+<div id="formPage">
+  <button class="back-btn" onclick="closeForm()">← חזור לסרטון</button>
+  
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-eyebrow">📚 טופס הרשמה מורים</div>
+    <h1 class="hero-title">
+      ספר לימוד שמשנה את חוויית ההוראה.<br>
+      <em>דרך הביולוגיה</em> – ספר הלימוד שחיכית לו.
+    </h1>
+    <p class="hero-sub">
+      מיומנויות בילט-אין, חיבור לחיים, חיסכון בזמן ולמידה פעילה אמיתית –
+      כל אלה בספר אחד שנכתב עבורכם ועבור תלמידיכם.
+      מלא/י את הפרטים ותקבל/י ערכת היכרות מלאה מיד עם אישור משרד החינוך.
+    </p>
+  </div>
+
+  <div class="card">
+    <form id="mainForm" novalidate onsubmit="handleSubmit(event)">
+
+    <div class="sec-head">
+      <div class="sec-icon">📋</div>
+      <h2>פרטים אישיים – שדות חובה</h2>
+    </div>
+    <div class="fields">
+
+      <div class="field-row">
+        <!-- ✅ FIX: removed extra nested <div class="field"> that was here -->
+        <div class="field">
+          <label>שם מלא <span class="req">*</span></label>
+          <input type="text" name="name" placeholder="שם פרטי ושם משפחה" required>
+        </div>
+        <div class="field">
+          <label>תפקידך בבית הספר <span class="req">*</span></label>
+          <input type="text" name="role" required placeholder="לדוגמה: מורה לביולוגיה / רכז/ת מדעים">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>כתובת דוא"ל <span class="req">*</span></label>
+        <input type="email" name="email" placeholder="your@email.com" required>
+      </div>
+
+      <div class="field">
+        <label>דוא"ל בית הספר <span class="req">*</span></label>
+        <input type="email" name="school_email" required placeholder="example@school.k12.il">
+      </div>
+
+      <div class="field">
+        <label>טלפון סלולרי <span class="req">*</span></label>
+        <input type="tel" name="phone" placeholder="05X-XXXXXXX" required>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>שם בית הספר <span class="req">*</span></label>
+          <input type="text" name="school" placeholder="שם המוסד" required>
+        </div>
+        <div class="field">
+          <label>סמל מוסד <span class="req">*</span></label>
+          <input type="text" name="school_id" placeholder="6 ספרות" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>היישוב שבו שוכן בית הספר <span class="req">*</span></label>
+        <input type="text" name="city" placeholder="עיר / ישוב" required>
+      </div>
+
+      <div class="field">
+        <label>כתובת בית הספר למשלוח הספר <span class="req">*</span></label>
+        <input type="text" name="address" placeholder="רחוב, מספר בית, עיר, מיקוד" required>
+      </div>
+
+    </div>
+
+    <div class="div"></div>
+
+    <div class="sec-head alt">
+      <div class="sec-icon">✨</div>
+      <h2>כמה שאלות קצרות – לא חובה, אבל נשמח!</h2>
+    </div>
+    <div class="fields">
+
+      <div class="field">
+        <label>כמה שנים את/ה מלמד/ת? <span class="opt">(רשות)</span></label>
+        <div class="chips" id="yearsChips">
+          <label class="chip"><input type="radio" name="years" value="1-5"> 1–5 שנים</label>
+          <label class="chip"><input type="radio" name="years" value="6-10"> 6–10 שנים</label>
+          <label class="chip"><input type="radio" name="years" value="11-20"> 11–20 שנים</label>
+          <label class="chip"><input type="radio" name="years" value="21-30"> 21–30 שנים</label>
+          <label class="chip"><input type="radio" name="years" value="30+"> יותר מ-30</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>באילו כיתות את/ה מלמד/ת? <span class="opt">(ניתן לבחור יותר מאחת)</span></label>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="grade" value="ז"> ז׳</label>
+          <label class="chip"><input type="checkbox" name="grade" value="ח"> ח׳</label>
+          <label class="chip"><input type="checkbox" name="grade" value="ט"> ט׳</label>
+          <label class="chip"><input type="checkbox" name="grade" value="י"> י׳</label>
+          <label class="chip"><input type="checkbox" name="grade" value="יא"> יא׳</label>
+          <label class="chip"><input type="checkbox" name="grade" value="יב"> יב׳</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>מקצוע ההוראה המרכזי שלך <span class="opt">(ניתן לבחור יותר מאחד)</span></label>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="subject" value="מדע"> מדע וטכנולוגיה</label>
+          <label class="chip"><input type="checkbox" name="subject" value="כימיה"> כימיה</label>
+          <label class="chip"><input type="checkbox" name="subject" value="ביולוגיה"> ביולוגיה</label>
+          <label class="chip"><input type="checkbox" name="subject" value="פיסיקה"> פיסיקה</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>עד כמה חשוב בעינייך שחומר הלימוד יהיה קשור לחיים האמיתיים? <span class="opt">(רשות)</span></label>
+        <div class="scale">
+          <input type="radio" name="life_rel" id="lr1" value="1"><label for="lr1">לא חשוב בכלל</label>
+          <input type="radio" name="life_rel" id="lr2" value="2"><label for="lr2">קצת</label>
+          <input type="radio" name="life_rel" id="lr3" value="3"><label for="lr3">חשוב</label>
+          <input type="radio" name="life_rel" id="lr4" value="4"><label for="lr4">מאוד</label>
+          <input type="radio" name="life_rel" id="lr5" value="5"><label for="lr5">חשוב מאוד</label>
+        </div>
+        <div class="cond-msg" id="msg_life">
+          💡 ספר הלימוד <b>"דרך הביולוגיה"</b> מכיל דוגמאות רלוונטיות לחיים, מגוונות, מפתיעות ומסקרנות.
+        </div>
+      </div>
+
+      <div class="field">
+        <label>האם היית רוצה שהשיעורים יכילו מיומנויות כחלק מהוראת הנושאים ולא כשיעורים נפרדים? <span class="opt">(רשות)</span></label>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="skills" value="yes" onchange="showCond(this,'msg_skills_yes')"> כן</label>
+          <label class="chip"><input type="radio" name="skills" value="no" onchange="hideCond('msg_skills_yes','msg_skills_maybe')"> לא</label>
+          <label class="chip"><input type="radio" name="skills" value="maybe" onchange="showCond(this,'msg_skills_maybe')"> מה זה משנה?</label>
+        </div>
+        <div class="cond-msg" id="msg_skills_yes">
+          בספר "דרך הביולוגיה" מוקנות מיומנויות למידה ומיומנויות מדעיות בצורה מפורשת בתוך הנושאים הביולוגיים. לאחר ההקניה נדרש שימוש במיומנות שהוקנתה שוב ושוב לאורך הספר, כך הסיכויים להפנמתה עולים.
+        </div>
+        <div class="cond-msg" id="msg_skills_maybe">
+          💡 הוראת מיומנויות כחלק מנושא הלימוד מדמה את ההליך המדעי בצורה טובה יותר, ומעלה את הסיכוי שהמיומנות תלווה את התלמיד בכל תחום – ולא תישאר מנותקת מהקשר.
+        </div>
+      </div>
+
+      <div class="field">
+        <label>האם היית רוצה לקבל כלים לסייע לתלמידייך בהבנת הנקרא? <span class="opt">(רשות)</span></label>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="reading" value="yes" onchange="showCond(this,'msg_reading')"> כן</label>
+          <label class="chip"><input type="radio" name="reading" value="no" onchange="hideCond('msg_reading')"> לא</label>
+        </div>
+        <div class="cond-msg" id="msg_reading">
+          📖 הספר יסייע לך רבות בהקניית מיומנויות לניתוח טקסטים והבנתם, עם תרגולים רבים. מחקרים מוכיחים שהקניה מפורשת של מיומנויות משפרת את יכולת הבנת הנקרא.
+        </div>
+      </div>
+
+      <div class="field">
+        <label>האם היית רוצה שהתלמידים יפעלו יותר בשיעור, על חשבון ההוראה הפרונטלית? <span class="opt">(רשות)</span></label>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="active" value="yes" onchange="showCond(this,'msg_active')"> כן</label>
+          <label class="chip"><input type="radio" name="active" value="no" onchange="hideCond('msg_active')"> לא</label>
+        </div>
+        <div class="cond-msg" id="msg_active">
+          הספר מחייב למידה פעילה – מבלי שתצטרך לעבוד קשה. התרגילים שיפעילו את התלמידים נמצאים בתוך הספר, והמדריך למורה מציע לך הצעות כיצד לנצלם בצורה מיטבית.
+        </div>
+      </div>
+
+      <div class="field">
+        <label>עד כמה את/ה מנוסה בהוראה אוריינית? <span class="opt">(רשות)</span></label>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="literacy" value="what"> מהי הוראה אוריינית?</label>
+          <label class="chip"><input type="radio" name="literacy" value="none"> לא מנוסה</label>
+          <label class="chip"><input type="radio" name="literacy" value="some"> מנוסה קצת</label>
+          <label class="chip"><input type="radio" name="literacy" value="exp"> מנוסה</label>
+          <label class="chip"><input type="radio" name="literacy" value="champ"> אליפות האוריינות זה אני 🏆</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>האם היית רוצה להשתתף בהשתלמות מלווה להוראת הספר, במידה ותפתח השתלמות שכזו? <span class="opt">(רשות)</span></label>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="course" value="yes"> כן, בהחלט!</label>
+          <label class="chip"><input type="radio" name="course" value="maybe"> אולי</label>
+          <label class="chip"><input type="radio" name="course" value="no"> לא בשלב זה</label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="btn-submit">✅ שלח/י – אני רוצה לקבל את הספר!</button>
+    </div>
+
+    <div style="text-align:center;font-size:0.8rem;color:#555;margin:0 28px 24px;line-height:1.8;">
+      * מוגבל לספר אחד לכל בית ספר.<br>
+      * בתי ספר שיכניסו את הספר לרשימות הספרים יקבלו ספר לכל כיתה בשכבה.<br>
+      * ברכישות מרוכזות תינתן הנחה משמעותית.<br><br>
+      יחידת ספרי לימוד הוצאת כנרת, זמורה דביר,<br>
+      רח' אגוז 6, פארק תעשייה חבל מודיעין 7319900<br>
+      טל. 0732257603 פקס 036340953<br>
+      <a href="https://edu.kinbooks.co.il" target="_blank" rel="noopener noreferrer">https://edu.kinbooks.co.il</a>
+    </div>
+
+    <div id="thankyou">
+      <div class="ty-circle">✓</div>
+      <h2>תודה רבה! 🎉</h2>
+      <p style="direction: rtl; text-align: center;">
+        ההרשמה שלך התקבלה בהצלחה.<br>
+        <b>הספר ישלח אליך מיד עם קבלת אישור משרד החינוך.</b><br><br>
+        בהצלחה בכיתות! מקווים שתהנו ללמד <em>דרך הביולוגיה</em> 🌿<br>
+        <small style="color:#8ba5bc;">נורית שושני-הֵכֶל וצוות דרך הביולוגיה</small>
+      </p>
+    </div>
+
+  </form>
+  </div>
+
+</div>
+
+<script>
+var vid = document.getElementById('vid');
+var overlay = document.getElementById('overlay');
+var replayBtn = document.getElementById('replayBtn');
+var shown = false;
+
+if (vid) {
+  vid.addEventListener('ended', showCTA);
+  vid.onended = showCTA;
+}
+
+function showCTA() {
+  if (shown) return;
+  shown = true;
+  if (overlay) overlay.classList.add('visible');
+  if (replayBtn) replayBtn.classList.add('visible');
+}
+
+function replay() {
+  shown = false;
+  if (overlay) overlay.classList.remove('visible');
+  if (replayBtn) replayBtn.classList.remove('visible');
+  if (vid) { vid.currentTime = 0; vid.play(); }
+}
+
+var formPage = document.getElementById('formPage');
+
+function openForm() {
+  if (vid) vid.pause();
+  document.body.style.overflow = 'hidden';
+  if (formPage) { formPage.classList.add('visible'); formPage.scrollTop = 0; }
+}
+
+function closeForm() {
+  if (formPage) formPage.classList.remove('visible');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('input[name="life_rel"]').forEach(function(r) {
+  r.addEventListener('change', function() {
+    var msg = document.getElementById('msg_life');
+    if (msg) msg.classList.toggle('show', this.value !== '1');
+  });
+});
+
+function showCond(el) {
+  for (var i = 1; i < arguments.length; i++) {
+    var node = document.getElementById(arguments[i]);
+    if (node) node.classList.add('show');
+  }
+}
+
+function hideCond() {
+  for (var i = 0; i < arguments.length; i++) {
+    var node = document.getElementById(arguments[i]);
+    if (node) node.classList.remove('show');
+  }
+}
+
+var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyQIHrUC47NL9JkrmrvPlp2rdnmE7TDFdOwmVH5sl1H7UIKfn21OwF8TcQPEzXeT_JPIw/exec';
+
+function handleSubmit(e) {
+  e.preventDefault();
+  var form = document.getElementById('mainForm');
+  if (!form) return;
+
+  var valid = true;
+  form.querySelectorAll('[required]').forEach(function(el) {
+    el.classList.remove('err');
+    if (!el.value.trim()) { el.classList.add('err'); valid = false; }
+  });
+
+  if (!valid) {
+    var firstErr = form.querySelector('.err');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  var fd = new FormData(form);
+  var data = {};
+  fd.forEach(function(v, k) {
+    if (data[k]) {
+      data[k] = Array.isArray(data[k]) ? [...data[k], v] : [data[k], v];
+    } else {
+      data[k] = v;
+    }
+  });
+
+  ['grade', 'subject'].forEach(function(key) {
+    if (!data[key]) data[key] = [];
+    if (!Array.isArray(data[key])) data[key] = [data[key]];
+  });
+
+  // Debug: log data before sending
+  console.log('Sending data:', JSON.stringify(data));
+
+  var btn = form.querySelector('.btn-submit');
+  if (btn) { btn.textContent = '⏳ שולח...'; btn.disabled = true; }
+
+  fetch(BACKEND_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(data)
+  })
+  .then(function() { showThankyou(); })
+  .catch(function(err) {
+    console.warn('Submission note:', err);
+    alert('השליחה לא הושלמה. יש לבדוק שה-Web App פורסם כ-Anyone.');
+  })
+  .finally(function() {
+    if (btn) { btn.textContent = '✅ שלח/י – אני רוצה לקבל את הספר!'; btn.disabled = false; }
+  });
+}
+
+function showThankyou() {
+  var form = document.getElementById('mainForm');
+  if (!form) return;
+  form.querySelectorAll('.sec-head, .fields, .div, .submit-wrap').forEach(function(el) {
+    el.style.display = 'none';
+  });
+  var thankyou = document.getElementById('thankyou');
+  if (thankyou) { thankyou.classList.add('show'); thankyou.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+}
+</script>
+</body>
+</html>
