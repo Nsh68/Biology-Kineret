@@ -388,9 +388,9 @@ video { width:100%; display:block; }
         <label>כתובת דוא"ל <span class="req">*</span></label>
         <input type="email" name="email" placeholder="your@email.com" required>
       </div>
-      <div class="field">
-        <label> כתובת דוא"ל של בית הספר<span class="req">*</span></label>
-        <input type="email" name="email2" placeholder="הקלד/י שוב את הדוא"ל" required>
+     <div class="field">
+        <label>דוא"ל בית הספר <span class="req">*</span></label>
+        <input type="email" name="school_email" required placeholder="example@school.k12.il">
       </div>
 
       <div class="field">
@@ -667,13 +667,7 @@ function handleSubmit(e) {
     }
   });
 
-  var em1 = form.querySelector('[name="email"]');
-  var em2 = form.querySelector('[name="email2"]');
-  if (em1 && em2 && em1.value && em2.value && em1.value !== em2.value) {
-    em2.classList.add('err');
-    em2.placeholder = '⚠ הכתובות אינן תואמות';
-    valid = false;
-  }
+ 
 
   if (!valid) {
     var firstErr = form.querySelector('.err');
