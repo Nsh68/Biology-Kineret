@@ -377,8 +377,10 @@ video { width:100%; display:block; }
           <input type="text" name="name" placeholder="שם פרטי ושם משפחה" required>
         </div>
         <div class="field">
-          <label>תעודת זהות <span class="req">*</span></label>
-          <input type="text" name="id" placeholder="9 ספרות" required>
+         <div class="field">
+            <label>תפקידך בבית הספר <span class="req">*</span></label>
+            <input type="text" name="role" required placeholder="לדוגמה: מורה לביולוגיה / רכז/ת מדעים">
+        </div>
         </div>
       </div>
 
@@ -387,7 +389,7 @@ video { width:100%; display:block; }
         <input type="email" name="email" placeholder="your@email.com" required>
       </div>
       <div class="field">
-        <label>אימות כתובת דוא"ל <span class="req">*</span></label>
+        <label> כתובת דוא"ל של בית הספר<span class="req">*</span></label>
         <input type="email" name="email2" placeholder="הקלד/י שוב את הדוא"ל" required>
       </div>
 
@@ -408,12 +410,12 @@ video { width:100%; display:block; }
       </div>
 
       <div class="field">
-        <label>יישוב <span class="req">*</span></label>
+        <label> היישוב שבו שוכן בית הספר <span class="req">*</span></label>
         <input type="text" name="city" placeholder="עיר / ישוב" required>
       </div>
 
       <div class="field">
-        <label>כתובת מגורים למשלוח הספר <span class="req">*</span></label>
+        <label>כתובת בית הספר למשלוח הספר <span class="req">*</span></label>
         <input type="text" name="address" placeholder="רחוב, מספר בית, עיר, מיקוד" required>
       </div>
 
